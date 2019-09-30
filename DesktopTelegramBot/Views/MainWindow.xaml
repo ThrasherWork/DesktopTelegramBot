@@ -1,0 +1,35 @@
+﻿<Window x:Class="DesktopTelegramBot.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:catel="http://schemas.catelproject.com"
+        xmlns:views="clr-namespace:DesktopTelegramBot.Views"
+        mc:Ignorable="d"
+        Title="{Binding Title}" 
+        Height="500" Width="300"
+        MinHeight="300" MinWidth="200"
+		WindowStyle="ToolWindow" >
+
+	<i:Interaction.Triggers>
+		<i:EventTrigger EventName="Loaded">
+			<catel:EventToCommand Command="{Binding LoadCommand}" />
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
+
+	<Grid>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<views:MainPanelView Grid.Row="0" />
+		<views:ContactListView Grid.Row="1" />
+
+		<views:LoadingView Grid.RowSpan="2" Visibility="{Binding IsLoading, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
+
+	</Grid>
+
+</Window>

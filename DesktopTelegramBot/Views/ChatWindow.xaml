@@ -1,0 +1,99 @@
+﻿<catel:Window x:Class="DesktopTelegramBot.Views.ChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:catel="http://schemas.catelproject.com"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:DesktopTelegramBot.Behaviors"
+        mc:Ignorable="d"
+        Title="{Binding Title}" 
+		WindowStyle="ToolWindow"
+        Height="550" Width="350"
+        MinWidth="300" MinHeight="350" >
+
+	<Grid>
+
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<ScrollViewer Background="AliceBlue" >
+
+			<i:Interaction.Behaviors>
+				<behaviors:AutoScrollBehavior />
+			</i:Interaction.Behaviors>
+
+			<ItemsControl ItemsSource="{Binding Messages}">
+
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel VerticalAlignment="Bottom" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+
+						<Grid x:Name="RootGrid" >
+							<Border x:Name="MessageBorder" Padding="5" BorderThickness="0.5" BorderBrush="Black">
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
+
+									<TextBlock Grid.Row="0" Text="{Binding Message}" 
+									           FontSize="18" TextWrapping="Wrap"
+									           Margin="2" />
+
+									<TextBlock x:Name="DateTxt" 
+									           Grid.Row="1" 
+									           Text="{Binding DateTime, Converter={StaticResource UtcToLocalTimeConverter}, StringFormat={}{0:HH:mm:ss}}"
+									           Margin="2"
+									           FontSize="14" />
+
+								</Grid>
+							</Border>
+						</Grid>
+
+						<DataTemplate.Triggers>
+
+							<DataTrigger Binding="{Binding IsIncoming}" Value="True">
+								<Setter TargetName="MessageBorder" Property="Background" Value="Gainsboro"/>
+								<Setter TargetName="MessageBorder" Property="HorizontalAlignment" Value="Left"/>
+								<Setter TargetName="MessageBorder" Property="Margin" Value="3 5 70 3"/>
+								<Setter TargetName="MessageBorder" Property="CornerRadius" Value="0 10 10 10"/>
+								<Setter TargetName="DateTxt" Property="HorizontalAlignment" Value="Right"/>
+							</DataTrigger>
+
+							<DataTrigger Binding="{Binding IsOutgoing}" Value="True">
+								<Setter TargetName="MessageBorder" Property="Background" Value="PowderBlue"/>
+								<Setter TargetName="MessageBorder" Property="HorizontalAlignment" Value="Right"/>
+								<Setter TargetName="MessageBorder" Property="Margin" Value="70 3 5 3"/>
+								<Setter TargetName="MessageBorder" Property="CornerRadius" Value="10 10 0 10"/>
+								<Setter TargetName="DateTxt" Property="HorizontalAlignment" Value="Right"/>
+							</DataTrigger>
+
+						</DataTemplate.Triggers>
+
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+
+			</ItemsControl>
+
+		</ScrollViewer>
+
+		<TextBox Grid.Row="1"
+				 Text="{Binding CurrentMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				 FontSize="18"
+		         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+		         MaxLines="5" Padding="3" MinLines="2">
+			<TextBox.InputBindings>
+				<KeyBinding Key="Enter" Command="{Binding SendCommand}" />
+			</TextBox.InputBindings>
+		</TextBox>
+
+	</Grid>
+</catel:Window>
