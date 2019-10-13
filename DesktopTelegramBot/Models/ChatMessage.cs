@@ -12,8 +12,8 @@ namespace DesktopTelegramBot.Models
 		public string Message { get; private set; }
 		public ChatMessageType Type { get; private set; }
 
-		public bool IsIncoming => Type == ChatMessageType.Incoming;
-		public bool IsOutgoing => Type == ChatMessageType.Outgoing;
+		//public bool IsIncoming => Type == ChatMessageType.Incoming;
+		//public bool IsOutgoing => Type == ChatMessageType.Outgoing;
 
 		private ChatMessage()
 		{
@@ -40,7 +40,7 @@ namespace DesktopTelegramBot.Models
 
 	enum ChatMessageType
 	{
-		None,
+		//None,
 
 		Incoming,
 		Outgoing,
